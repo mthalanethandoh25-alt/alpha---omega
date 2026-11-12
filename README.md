@@ -1,2 +1,40 @@
 # alpha---omega
 My Alpha and Omega faith app
+<!-- PRAYER CATEGORIES - LIKE IN YOUR PHOTO -->
+<h2 style="color:#f9c74f;">🙏 Prayers - Choose a Category</h2>
+<div style="background:white; border-radius:15px; overflow:hidden;">
+  <div onclick="showPrayers('praise')" style="padding:15px; border-bottom:1px solid #eee; cursor:pointer; color:black;">Prayers of Praise and Worship →</div>
+  <div onclick="showPrayers('alleviate')" style="padding:15px; border-bottom:1px solid #eee; cursor:pointer; color:black;">Prayers to Alleviate God and Mother Mary's Pains →</div>
+  <div onclick="showPrayers('salvation')" style="padding:15px; border-bottom:1px solid #eee; cursor:pointer; color:black;">Salvation Prayers →</div>
+  <div onclick="showPrayers('unborn')" style="padding:15px; border-bottom:1px solid #eee; cursor:pointer; color:black;">Prayers to Stop Abortions and to Baptise the Unborn →</div>
+  <div onclick="showPrayers('petition')" style="padding:15px; border-bottom:1px solid #eee; cursor:pointer; color:black;">Special Petition Prayers →</div>
+  <div onclick="showPrayers('guidance')" style="padding:15px; border-bottom:1px solid #eee; cursor:pointer; color:black;">Guidance and Protection Prayers →</div>
+  <div onclick="showPrayers('healing')" style="padding:15px; border-bottom:1px solid #eee; cursor:pointer; color:black;">Healing and Deliverance Prayers →</div>
+  <div onclick="showPrayers('law')" style="padding:15px; border-bottom:1px solid #eee; cursor:pointer; color:black;">Law Enforcement and Civil Service Prayers →</div>
+  <div onclick="showPrayers('dying')" style="padding:15px; border-bottom:1px solid #eee; cursor:pointer; color:black;">Prayers for the Dying and the Dead →</div>
+  <div onclick="showPrayers('family')" style="padding:15px; border-bottom:1px solid #eee; cursor:pointer; color:black;">Prayers for Marriages and Families →</div>
+  <div onclick="showPrayers('rosary')" style="padding:15px; border-bottom:1px solid #eee; cursor:pointer; color:black;">Holy Rosaries and Chaplets →</div>
+  <div onclick="showPrayers('missions')" style="padding:15px; border-bottom:1px solid #eee; cursor:pointer; color:black;">Prayers for Salvation Missions →</div>
+  <div onclick="showPrayers('darkness')" style="padding:15px; border-bottom:1px solid #eee; cursor:pointer; color:black;">Three Days of Darkness Prayers →</div>
+  <div onclick="showPrayers('bridget')" style="padding:15px; border-bottom:1px solid #eee; cursor:pointer; color:black;">St Bridget Prayer Devotions →</div>
+  <div onclick="showPrayers('extra')" style="padding:15px; cursor:pointer; color:black;">Supplementary Prayer Resources →</div>
+</div>
+
+<div id="prayerDisplay" style="background:white; color:black; border-radius:15px; padding:15px; margin-top:15px; display:none;"></div>
+
+<script>
+function showPrayers(type){
+  let box = document.getElementById('prayerDisplay');
+  box.style.display='block';
+  let texts = {
+    praise: "<h3>Prayers of Praise and Worship</h3><p>Lord, we praise You. You are holy, You are worthy. We worship You with all our hearts. Amen.</p>",
+    guidance: "<h3>Guidance and Protection Prayers</h3><p>Heavenly Father, guide my steps today. Give me wisdom, patience, and a heart that follows Your Word. Protect me and my family. Amen.</p><p><b>Umthandazo wokuhola:</b> Nkulunkulu wami, ngihole namuhla. Nginike ukuhlakanipha, ukubekezela nenhliziyo elalela iZwi lakho. Amen.</p>",
+    healing: "<h3>Healing and Deliverance Prayers</h3><p>Lord, when I feel weak, remind me that Your strength is always with me. Fill my heart with courage, peace and hope. Heal me and set me free. Amen.</p>",
+    family: "<h3>Prayers for Marriages and Families</h3><p>Lord, bless our marriages and families. Keep us safe, keep us together, fill our home with love and peace. Amen.</p>",
+    salvation: "<h3>Salvation Prayers</h3><p>Jesus, I believe in You. Save me, wash me clean, and lead me to eternal life. Amen.</p>",
+    rosary: "<h3>Holy Rosaries and Chaplets</h3><p>Holy Mary, Mother of God, pray for us now and at the hour of our death. Amen.</p>"
+  };
+  box.innerHTML = texts[type] || "<h3>This Category</h3><p>Prayer coming soon. You can add your prayer here.</p><p><button onclick=\"document.getElementById('prayerDisplay').style.display='none'\">← Back to all categories</button></p>";
+  window.scrollTo(0, box.offsetTop);
+}
+</script>
