@@ -18,13 +18,13 @@ input,textarea{width:100%;padding:10px;margin:5px 0;border-radius:10px;border:1p
 .bottomNav div{text-align:center;color:#555;font-size:13px;cursor:pointer;flex:1}
 .bottomNav div.active{color:#0a2a7a;font-weight:bold}
 .bottomNav span{font-size:22px;display:block}
-/* MORE PAGE LIKE YOUR PHOTO */
-.moreHeader{background:#0a2a7a;color:white;padding:16px;font-size:22px;font-weight:bold}
+.moreHeader{background:#0a2a7a;color:white;padding:16px;font-size:22px;font-weight:bold;display:flex;justify-content:space-between;align-items:center}
 .moreBanner{width:100%;display:block;height:260px;object-fit:cover}
 .moreList{background:white;color:black}
 .moreItem{display:flex;align-items:center;padding:16px;border-bottom:1px solid #eee;cursor:pointer}
 .moreItem span{font-size:26px;margin-right:15px}
 .moreItem b{font-size:17px;font-weight:500}
+.healSearch{width:100%;padding:12px;border:none;border-bottom:1px solid #ddd;font-size:16px}
 </style>
 </head>
 <body>
@@ -35,6 +35,7 @@ input,textarea{width:100%;padding:10px;margin:5px 0;border-radius:10px;border:1p
 <div style="text-align:center">
 <span class="tab" onclick="showTab('home')">Home</span>
 <span class="tab" onclick="showTab('prayers')">Prayers</span>
+<span class="tab" onclick="showTab('healing')">Healing</span>
 <span class="tab" onclick="showTab('about')">More</span>
 </div>
 <h2 style="padding:0 15px">Messages</h2>
@@ -73,6 +74,31 @@ input,textarea{width:100%;padding:10px;margin:5px 0;border-radius:10px;border:1p
 <div id="prayerDisplay" class="prayerBox" style="display:none;"></div>
 </div>
 
+<div id="healing" style="display:none">
+<div class="moreHeader"><span>Healing guide</span><span>🔍</span></div>
+<input class="healSearch" id="healSearch" placeholder="Search healing guide..." onkeyup="searchHealing()">
+<div class="moreList" id="healList">
+<div class="moreItem" onclick="showHealing('intro')"><b>Introduction</b></div>
+<div class="moreItem" onclick="showHealing('love')"><b>God's love is beyond our understanding</b></div>
+<div class="moreItem" onclick="showHealing('listen')"><b>Listen to God in the depths of your heart</b></div>
+<div class="moreItem" onclick="showHealing('bible')"><b>The Word of God is in the Bible</b></div>
+<div class="moreItem" onclick="showHealing('sacrifice')"><b>Loving sacrificially prepares us for eternal life</b></div>
+<div class="moreItem" onclick="showHealing('promise')"><b>The earthly promise for those who love God</b></div>
+<div class="moreItem" onclick="showHealing('ceasing')"><b>Pray without ceasing and trust Jesus</b></div>
+<div class="moreItem" onclick="showHealing('mary')"><b>Mother Mary is the most powerful intercessor to Jesus</b></div>
+<div class="moreItem" onclick="showHealing('angels')"><b>The angels and saints are our heavenly helpers</b></div>
+<div class="moreItem" onclick="showHealing('church')"><b>The Catholic Church has the keys to heaven</b></div>
+<div class="moreItem" onclick="showHealing('priests')"><b>Catholic priests are essential for our healing</b></div>
+<div class="moreItem" onclick="showHealing('sacraments')"><b>Come to Jesus' Sacraments for true healing</b></div>
+<div class="moreItem" onclick="showHealing('confession')"><b>Understanding the powerful Sacrament of Confession</b></div>
+<div class="moreItem" onclick="showHealing('dead')"><b>Pray for the dead</b></div>
+<div class="moreItem" onclick="showHealing('adoration')"><b>Spend time with Jesus in Adoration</b></div>
+<div class="moreItem" onclick="showHealing('forgive')"><b>Forgiveness brings healing</b></div>
+<div class="moreItem" onclick="showHealing('family')"><b>Healing in the family</b></div>
+</div>
+<div id="healDisplay" class="prayerBox" style="display:none;"></div>
+</div>
+
 <div id="about" style="display:none">
 <div class="moreHeader">Alpha+Omega Mission</div>
 <img class="moreBanner" src="https://images.unsplash.com/photo-1502139214982-d0ad755818d8?w=900&q=80" alt="Jesus and Earth">
@@ -90,7 +116,7 @@ input,textarea{width:100%;padding:10px;margin:5px 0;border-radius:10px;border:1p
 <div class="bottomNav">
 <div onclick="showTab('home')" id="navHome" class="active"><span>🏠</span>Home</div>
 <div onclick="showTab('prayers')" id="navPrayers"><span>📜</span>Prayers</div>
-<div onclick="showTab('prayers');showPrayers('healing')" id="navHealing"><span>📖</span>Healing</div>
+<div onclick="showTab('healing')" id="navHealing"><span>📖</span>Healing</div>
 <div onclick="showTab('home')" id="navFav"><span>❤️</span>Favourites</div>
 <div onclick="showTab('about')" id="navMore"><span>☰</span>More</div>
 </div>
@@ -100,10 +126,12 @@ let messages = JSON.parse(localStorage.getItem('ao_msgs') || '[]');
 function showTab(t){
 document.getElementById('home').style.display = t=='home'?'block':'none';
 document.getElementById('prayers').style.display = t=='prayers'?'block':'none';
+document.getElementById('healing').style.display = t=='healing'?'block':'none';
 document.getElementById('about').style.display = t=='about'?'block':'none';
 document.querySelectorAll('.bottomNav div').forEach(d=>d.classList.remove('active'));
 if(t=='home') document.getElementById('navHome').classList.add('active');
 if(t=='prayers') document.getElementById('navPrayers').classList.add('active');
+if(t=='healing') document.getElementById('navHealing').classList.add('active');
 if(t=='about') document.getElementById('navMore').classList.add('active');
 window.scrollTo(0,0);
 }
@@ -111,37 +139,63 @@ function showForm(){ document.getElementById('formBox').style.display='block'; }
 function hideForm(){ document.getElementById('formBox').style.display='none'; }
 function saveMsg(){ let m={title:document.getElementById('fTitle').value, verse:document.getElementById('fVerse').value, msg:document.getElementById('fMsg').value, prayer:document.getElementById('fPrayer').value}; messages.unshift(m); localStorage.setItem('ao_msgs', JSON.stringify(messages)); hideForm(); render(); }
 function render(){ let html=""; messages.forEach((m)=>{ html+='<div class="card"><h3>'+(m.title||'')+'</h3><p><b>'+(m.verse||'')+'</b></p><p>'+(m.msg||'')+'</p><p><b>Prayer:</b> '+(m.prayer||'')+'</p></div>'; }); document.getElementById('list').innerHTML = html || "<p style='padding:0 15px'>No messages yet. Click + Add message.</p>"; }
+function searchHealing(){ let q=document.getElementById('healSearch').value.toLowerCase(); document.querySelectorAll('#healList .moreItem').forEach(el=>{ el.style.display = el.innerText.toLowerCase().includes(q) ? 'flex':'none'; }); }
+function showHealing(type){
+let box=document.getElementById('healDisplay'); box.style.display='block';
+let H={
+intro:"<h3>Introduction</h3><p>Welcome to the Healing Guide. Healing is not only about the body. Jesus wants to heal your body, your mind, your heart, your family and your soul.</p><p>Take your time. Read slowly. Pray after each section. Let God speak to you.</p><p><b>Prayer:</b> Jesus, heal me completely. Amen.</p>",
+love:"<h3>God's love is beyond our understanding</h3><p>God's love is bigger than any sin, any sickness, any mistake. You cannot earn it. You cannot lose it. Even when you feel far from God, He is close to you.</p><p>He loves you as you are, right now. That love is what heals us.</p><p><i>Jeremiah 31:3 - I have loved you with an everlasting love.</i></p>",
+listen:"<h3>Listen to God in the depths of your heart</h3><p>God speaks in silence. Not always in noise, but in a still, small voice in your heart.</p><p>Find 5 quiet minutes each day. Close your eyes. Say: 'Jesus, speak to me, I am listening.' Then be still. Write down what you feel in your heart.</p><p><b>Prayer:</b> Lord, quiet my heart so I can hear You.</p>",
+bible:"<h3>The Word of God is in the Bible</h3><p>The Bible is not just a book - it is God's living Word. When you read it, God speaks healing into your life.</p><p>Read one verse each day. Repeat it. Believe it. For healing, read: Psalm 23, Psalm 103, Isaiah 53:5, Mark 5, John 11.</p><p><i>Hebrews 4:12 - The Word of God is alive and powerful.</i></p>",
+sacrifice:"<h3>Loving sacrificially prepares us for eternal life</h3><p>True love gives, even when it is hard. When we forgive, when we help others, when we carry our cross with love, we become like Jesus.</p><p>Your suffering offered to God is not wasted. It can heal others and prepare you for heaven.</p><p><b>Prayer:</b> Jesus, help me to love like You love.</p>",
+promise:"<h3>The earthly promise for those who love God</h3><p>God promises to be with those who love Him - not only in heaven, but here on earth too. Peace in trouble, strength in weakness, provision in need.</p><p><i>Romans 8:28 - All things work together for good for those who love God.</i></p>",
+ceasing:"<h3>Pray without ceasing and trust Jesus</h3><p>Don't stop praying. Pray in the morning, pray at work, pray in the car, pray before sleep. Short prayers are powerful: 'Jesus, help me.' 'Jesus, I trust in You.' 'Jesus, heal me.'</p><p>Trust is prayer. Even when you don't see the answer yet, trust that Jesus is working.</p>",
+mary:"<h3>Mother Mary is the most powerful intercessor to Jesus</h3><p>Mary is our Mother. She brings our prayers to Jesus, just like she did at the wedding in Cana. When you pray the Rosary, Mary prays with you.</p><p><b>Prayer:</b> Holy Mary, Mother of God, pray for us now and at the hour of our death. Amen.</p>",
+angels:"<h3>The angels and saints are our heavenly helpers</h3><p>You are not alone. Your guardian angel is with you every day. The saints in heaven pray for you.</p><p>Ask St Michael for protection, St Raphael for healing, St Joseph for family, St Padre Pio for miracles.</p><p><b>Prayer:</b> Angel of God, my guardian dear, watch over me. Amen.</p>",
+church:"<h3>The Catholic Church has the keys to heaven</h3><p>Jesus gave the Church the keys to heaven - the Sacraments, the teaching, the prayer of the community. In the Church we find forgiveness, the Eucharist, and true healing.</p><p>Stay close to the Church. Go to Mass. Stay in community.</p>",
+priests:"<h3>Catholic priests are essential for our healing</h3><p>Priests are chosen by God to bring Jesus to us - in Confession, in Anointing, in the Mass. Respect them, pray for them, and go to them when you need healing.</p><p>Don't be afraid to ask a priest to pray for you.</p>",
+sacraments:"<h3>Come to Jesus' Sacraments for true healing</h3><p>The Sacraments are Jesus touching us today: Baptism washes us, Confirmation strengthens us, Eucharist feeds us, Confession heals us, Anointing comforts the sick, Marriage blesses love.</p><p>The greatest healing is in the Holy Eucharist - Jesus Himself.</p>",
+confession:"<h3>Understanding the powerful Sacrament of Confession</h3><p>Confession is not about shame - it is about freedom. When you confess, Jesus forgives you completely.</p><p><b>How to confess:</b><br>1. Examine your heart<br>2. Say you are sorry<br>3. Tell the priest your sins honestly<br>4. Do your penance<br>5. Walk out FREE and healed!</p><p>Go to Confession often. It heals the soul.</p>",
+dead:"<h3>Pray for the dead</h3><p>Our loved ones who have died still need our prayers. Pray for them every day. Offer a Mass for them. Say the Rosary for them.</p><p><b>Prayer:</b> Eternal rest grant unto them, O Lord, and let perpetual light shine upon them. May they rest in peace. Amen.</p>",
+adoration:"<h3>Spend time with Jesus in Adoration</h3><p>In Adoration, Jesus is truly present in the Blessed Sacrament. Sit with Him. You don't need many words. Just be with Him.</p><p>Come with your pain, your questions, your tears. Jesus will give you peace.</p><p><b>Prayer:</b> Jesus, I adore You. Heal me in Your presence.</p>",
+forgive:"<h3>Forgiveness brings healing</h3><p>Unforgiveness is like poison in your heart. When you forgive, YOU are healed first.</p><p>Say: 'Lord, I forgive [name]. I release them. Heal my heart.' You may need to say it many times. God will help you.</p>",
+family:"<h3>Healing in the family</h3><p>Family healing starts with prayer together. Pray the Rosary as a family. Eat together. Forgive quickly. Say 'I love you' every day.</p><p>Lord, heal our family. Amen.</p>"
+};
+box.innerHTML = H[type] || "<p>Coming soon.</p>";
+box.innerHTML += "<br><button onclick=\"document.getElementById('healDisplay').style.display='none'\">← Back to Healing Guide</button>";
+box.scrollIntoView();
+}
 function showMore(type){
 let box=document.getElementById('moreDisplay'); box.style.display='block';
 let M={
 about:"<h3>About Us</h3><p>Alpha & Omega is a faith-sharing space created to encourage people through Scripture, prayer and reflection.</p><p>“I am the Alpha and the Omega, the First and the Last, the Beginning and the End.” - Revelation 22:13</p><p>Created by Thando to share God's Word, to pray together and to encourage everyone in Underberg and beyond.</p>",
-fernanda:"<h3>Fernanda's Rare Gift</h3><p>Fernanda received a special gift of prayer and healing. Through her gift, many people have found hope, healing and a closer walk with God. We thank God for her life and her mission.</p><p><i>Share your testimony with Thando to add it here.</i></p>",
-meditations:"<h3>Meditations</h3><p><b>Morning Meditation:</b> Be still and know that God is with you. Breathe in peace, breathe out fear.</p><p><b>Evening Meditation:</b> Thank God for today. Let go of worries. Rest in His love.</p><p><b>Scripture:</b> Be still, and know that I am God. - Psalm 46:10</p>",
-healingSeminar:"<h3>Healing Seminar Presentation</h3><p>Our Healing Seminar is about Jesus healing the whole person - body, mind and spirit.</p><p>1. Praise and Worship<br>2. Teaching on Healing<br>3. Prayer for the Sick<br>4. Testimonies<br>5. Blessing</p><p>Contact Thando for the next seminar date in Underberg.</p>"
+fernanda:"<h3>Fernanda's Rare Gift</h3><p>Fernanda received a special gift of prayer and healing. Through her gift, many people have found hope, healing and a closer walk with God. We thank God for her life and her mission.</p>",
+meditations:"<h3>Meditations</h3><p><b>Morning:</b> Be still and know God is with you.<br><b>Evening:</b> Thank God for today. Rest in His love.</p><p><i>Psalm 46:10 - Be still, and know that I am God.</i></p>",
+healingSeminar:"<h3>Healing Seminar Presentation</h3><p>1. Praise and Worship<br>2. Teaching on Healing<br>3. Prayer for the Sick<br>4. Testimonies<br>5. Blessing</p><p>Contact Thando for the next seminar date in Underberg.</p>"
 };
 box.innerHTML = M[type] || "<p>Coming soon.</p>";
 box.innerHTML += "<br><button onclick=\"document.getElementById('moreDisplay').style.display='none'\">← Back</button>";
 box.scrollIntoView();
 }
-function shareApp(){ let link='https://mthalanethandoh25-alt.github.io/alpha---omega/'; if(navigator.share){ navigator.share({title:'Alpha & Omega', text:'Download Alpha & Omega faith app', url:link}); } else { prompt('Copy this link to share:', link); } }
+function shareApp(){ let link='https://mthalanethandoh25-alt.github.io/alpha---omega/'; if(navigator.share){ navigator.share({title:'Alpha & Omega', text:'Alpha & Omega faith app', url:link}); } else { prompt('Copy this link to share:', link); } }
 function showPrayers(type){
 let box=document.getElementById('prayerDisplay'); box.style.display='block';
 let T={
-praise:"<h3>🙏 Prayers of Praise and Worship</h3><p>Lord, I praise You. You are holy, You are worthy. Thank You for a new day. I worship You with all my heart. Amen.</p><p><i>Psalm 100:4 - Enter His gates with thanksgiving.</i></p>",
-alleviate:"<h3>🙏 Prayers to Alleviate God and Mother Mary's Pains</h3><p>Lord Jesus, we offer You our love to comfort Your Sacred Heart. Mother Mary, we console your Immaculate Heart. Help us to love more and sin less. Amen.</p>",
-salvation:"<h3>🙏 Salvation Prayers</h3><p>Jesus, I believe You died for me and rose again. Forgive my sins, wash me clean, come into my heart. I accept You as my Lord and Saviour. Amen.</p>",
-unborn:"<h3>🙏 Prayers to Stop Abortions and to Baptise the Unborn</h3><p>Lord, protect every unborn child. Give courage to mothers. We baptise in spirit every child lost - receive them into heaven. Amen.</p>",
-petition:"<h3>🙏 Special Petition Prayers</h3><p>Lord, You know what is in my heart. I bring You my special petition. [Say your need]. I trust You. Amen.</p>",
-guidance:"<h3>🙏 Guidance and Protection Prayers</h3><p>Heavenly Father, guide my steps today. Give me wisdom and protect my family. Amen.</p><p><b>Umthandazo wokuhola:</b> Nkulunkulu wami, ngihole namuhla. Nginike ukuhlakanipha. Amen.</p>",
-healing:"<h3>🙏 Healing and Deliverance Prayers</h3><p>Lord Jesus, heal my body, mind and heart. Deliver me from every chain. By Your stripes I am healed. Amen.</p>",
-law:"<h3>🙏 Law Enforcement and Civil Service Prayers</h3><p>Lord, bless and protect police, nurses, teachers and all who serve. Keep them safe. Amen.</p>",
-dying:"<h3>🙏 Prayers for the Dying and the Dead</h3><p>Lord, comfort the dying. Eternal rest grant unto them, O Lord. Comfort their families. Amen.</p>",
-family:"<h3>🙏 Prayers for Marriages and Families</h3><p>Lord, bless our marriages and families. Fill our home with love, peace and forgiveness. Amen.</p>",
-rosary:"<h3>🙏 Holy Rosaries and Chaplets</h3><p><b>Hail Mary:</b> Hail Mary, full of grace, the Lord is with thee. Blessed art thou among women, and blessed is the fruit of thy womb, Jesus. Holy Mary, Mother of God, pray for us sinners, now and at the hour of our death. Amen.</p><p><b>Our Father:</b> Our Father, who art in heaven, hallowed be Thy name. Thy kingdom come, Thy will be done, on earth as it is in heaven. Amen.</p>",
+praise:"<h3>🙏 Prayers of Praise and Worship</h3><p>Lord, I praise You. You are holy, You are worthy. Thank You for a new day. Amen.</p>",
+alleviate:"<h3>🙏 Prayers to Alleviate God and Mother Mary's Pains</h3><p>Lord Jesus, we offer You our love to comfort Your Sacred Heart. Mother Mary, we console your Heart. Amen.</p>",
+salvation:"<h3>🙏 Salvation Prayers</h3><p>Jesus, forgive my sins, wash me clean, come into my heart. I accept You as my Lord. Amen.</p>",
+unborn:"<h3>🙏 Prayers to Stop Abortions and to Baptise the Unborn</h3><p>Lord, protect every unborn child. Receive every child lost into heaven. Amen.</p>",
+petition:"<h3>🙏 Special Petition Prayers</h3><p>Lord, You know my special petition. I trust You. Amen.</p>",
+guidance:"<h3>🙏 Guidance and Protection Prayers</h3><p>Heavenly Father, guide my steps and protect my family. Amen.</p><p><b>Umthandazo:</b> Nkulunkulu wami, ngihole namuhla. Amen.</p>",
+healing:"<h3>🙏 Healing and Deliverance Prayers</h3><p>Lord Jesus, heal my body, mind and heart. By Your stripes I am healed. Amen.</p>",
+law:"<h3>🙏 Law Enforcement and Civil Service Prayers</h3><p>Lord, bless and protect all who serve our country. Amen.</p>",
+dying:"<h3>🙏 Prayers for the Dying and the Dead</h3><p>Lord, comfort the dying. Eternal rest grant unto them, O Lord. Amen.</p>",
+family:"<h3>🙏 Prayers for Marriages and Families</h3><p>Lord, bless our marriages and families. Fill our home with love. Amen.</p>",
+rosary:"<h3>🙏 Holy Rosaries and Chaplets</h3><p><b>Hail Mary:</b> Hail Mary, full of grace, the Lord is with thee. Holy Mary, Mother of God, pray for us sinners, now and at the hour of our death. Amen.</p>",
 missions:"<h3>🙏 Prayers for Salvation Missions</h3><p>Lord, bless all missionaries. Let Your salvation reach every home. Amen.</p>",
-darkness:"<h3>🙏 Three Days of Darkness Prayers</h3><p>Lord, keep us safe in times of darkness. Let Your light shine in our homes. We trust in You. Amen.</p>",
-bridget:"<h3>🙏 St Bridget Prayer Devotions</h3><p>St Bridget, pray for us. Help us to meditate on the Passion of Jesus. Amen.</p>",
-extra:"<h3>🙏 Supplementary Prayer Resources</h3><p><b>Morning:</b> Lord, thank You for this new day. Amen.<br><b>Night:</b> Lord, watch over me while I sleep. Amen.<br><b>Before Eating:</b> Bless us, O Lord, and these Thy gifts. Amen.</p>"
+darkness:"<h3>🙏 Three Days of Darkness Prayers</h3><p>Lord, keep us safe. Let Your light shine in our homes. Amen.</p>",
+bridget:"<h3>🙏 St Bridget Prayer Devotions</h3><p>St Bridget, pray for us. Help us meditate on the Passion of Jesus. Amen.</p>",
+extra:"<h3>🙏 Supplementary Prayer Resources</h3><p><b>Morning:</b> Lord, thank You for this new day. Amen.<br><b>Night:</b> Lord, watch over me while I sleep. Amen.</p>"
 };
 box.innerHTML = T[type] || "<p>Prayer coming soon.</p>";
 box.innerHTML += "<br><button onclick=\"document.getElementById('prayerDisplay').style.display='none'\">← Back to all categories</button>";
