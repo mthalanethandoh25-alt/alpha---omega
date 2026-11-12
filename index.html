@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Alpha & Omega</title>
+<style>
+body{font-family:Arial;background:#0f2a1d;color:white;margin:0;padding:20px}
+h1{color:#f9c74f;text-align:center}
+button{background:#f9c74f;border:none;padding:10px 15px;border-radius:10px;font-weight:bold;cursor:pointer;margin:5px}
+.card{background:white;color:black;border-radius:15px;padding:15px;margin:15px 0}
+.card img{width:100%;border-radius:10px}
+input,textarea,select{width:100%;padding:10px;margin:5px 0;border-radius:10px;border:1px solid #ccc}
+#formBox{display:none;background:white;color:black;padding:15px;border-radius:15px}
+.tab{background:white;color:black;padding:10px;border-radius:10px;display:inline-block;margin:3px;cursor:pointer}
+</style>
+</head>
+<body>
+<h1>✝️ ALPHA & OMEGA</h1>
+<p style="text-align:center">Faith • Hope • The Word of God<br>Grow in faith and walk with God</p>
+
+<div style="text-align:center">
+<span class="tab" onclick="showTab('home')">Home</span>
+<span class="tab" onclick="showTab('prayers')">Prayers</span>
+<span class="tab" onclick="showTab('about')">About</span>
+</div>
+
+<div id="home">
+<h2>Messages</h2>
+<button onclick="showForm()">+ Add message</button>
+<div id="list"></div>
+<div id="formBox">
+<h2>Add Message</h2>
+<label>Title</label><input id="fTitle" placeholder="e.g. God Is Our Strength">
+<label>Bible verse</label><input id="fVerse" placeholder="e.g. Psalm 46:1">
+<label>Message</label><textarea id="fMsg" rows="4"></textarea>
+<label>Prayer</label><textarea id="fPrayer" rows="3"></textarea>
+<label>📸 Picture / Image</label><input type="file" id="fImage" accept="image/*" onchange="previewImage(event)">
+<img id="imagePreview" style="width:100%;max-width:300px;display:none;border-radius:10px;margin-top:10px;">
+<button onclick="saveMsg()">Save message</button>
+<button onclick="hideForm()">Cancel</button>
+</div>
+</div>
+
+<div id="prayers" style="display:none">
+<h2 style="color:#f9c74f;">🙏 Prayers - Choose a Category</h2>
+<div style="background:white;border-radius:15px;overflow:hidden;">
+<div onclick="showPrayers('praise')" style="padding:15px;border-bottom:1px solid #eee;cursor:pointer;color:black;">Prayers of Praise and Worship →</div>
+<div onclick="showPrayers('salvation')" style="padding:15px;border-bottom:1px solid #eee;cursor:pointer;color:black;">Salvation Prayers →</div>
+<div onclick="showPrayers('healing')" style="padding:15px;border-bottom:1px solid #eee;cursor:pointer;color:black;">Healing and Deliverance Prayers →</div>
+<div onclick="showPrayers('family')" style="padding:15px;border-bottom:1px solid #eee;cursor:pointer;color:black;">Prayers for Marriages and Families →</div>
+<div onclick="showPrayers('guidance')" style="padding:15px;border-bottom:1px solid #eee;cursor:pointer;color:black;">Guidance and Protection Prayers →</div>
+<div onclick="showPrayers('rosary')" style="padding:15px;cursor:pointer;color:black;">Holy Rosaries and Chaplets →</div>
+</div>
+<div id="prayerDisplay" style="background:white;color:black;border-radius:15px;padding:15px;margin-top:15px;display:none;"></div>
+</div>
+
+<div id="about" style="display:none">
+<h2>About Alpha & Omega</h2>
+<div class="card">
+<p>Alpha & Omega is a faith-sharing space created to encourage people through Scripture, prayer and reflection.</p>
+<p>“I am the Alpha and the Omega, the First and the Last, the Beginning and the End.” - Revelation 22:13</p>
+<p>Created by Thando to share God's Word, to pray together and to encourage everyone in Underberg and beyond.</p>
+</div>
+</div>
+
+<script>
+let messages = JSON.parse(localStorage.getItem('ao_msgs') || '[]');
+let editIndex = -1; let currentImage = "";
+function showTab(t){ document.getElementById('home').style.display = t=='home'?'block':'none'; document.getElementById('prayers').style.display = t=='prayers'?'block':'none'; document.getElementById('about').style.display = t=='about'?'block':'none'; }
+function previewImage(e){ let f=e.target.files[0]; if(!f) return; let r=new FileReader(); r.onload=function(ev){ currentImage=ev.target.result; let p=document.getElementById('imagePreview'); p.src=currentImage; p.style.display='block'; }; r.readAsDataURL(f); }
+function showForm(){ document.getElementById('formBox').style.display='block'; }
+function hideForm(){ document.getElementById('formBox').style.display='none'; }
+function saveMsg(){ let m={title:document.getElementById('fTitle').value, verse:document.getElementById('fVerse').value, msg:document.getElementById('fMsg').value, prayer:document.getElementById('fPrayer').value, image:currentImage}; if(editIndex>=0){ messages[editIndex]=m; } else { messages.unshift(m); } localStorage.setItem('ao_msgs', JSON.stringify(messages)); editIndex=-1; currentImage=""; hideForm(); render(); }
+function render(){ let html=""; messages.forEach((m,i)=>{ html+=`<div class="card">${m.image?`<img src="${m.image}">`:''}<h3>${m.title||''}</h3><p><b>${m.verse||''}</b></p><p>${m.msg||''}</p><p><b>Prayer:</b> ${m.prayer||''}</p><button onclick="editMsg(${i})">Edit</button><button onclick="delMsg(${i})">Delete</button></div>`; }); document.getElementById('list').innerHTML = html || "<p>No messages yet. Click + Add message.</p>"; }
+function editMsg(i){ let m=messages[i]; editIndex=i; currentImage=m.image||""; document.getElementById('fTitle').value=m.title||""; document.getElementById('fVerse').value=m.verse||""; document.getElementById('fMsg').value=m.msg||""; document.getElementById('fPrayer').value=m.prayer||""; let p=document.getElementById('imagePreview'); if(m.image){ p.src=m.image; p.style.display='block'; } else { p.style.display='none'; } showForm(); }
+function delMsg(i){ if(confirm("Delete?")){ messages.splice(i,1); localStorage.setItem('ao_msgs',JSON.stringify(messages)); render(); } }
+function showPrayers(type){ let box=document.getElementById('prayerDisplay'); box.style.display='block'; let texts={ praise:"<h3>Prayers of Praise and Worship</h3><p>Lord, we praise You. You are holy, You are worthy. Amen.</p>", salvation:"<h3>Salvation Prayers</h3><p>Jesus, I believe in You. Save me, wash me clean. Amen.</p>", healing:"<h3>Healing and Deliverance Prayers</h3><p>Lord, when I feel weak, remind me that Your strength is with me. Heal me. Amen.</p>", family:"<h3>Prayers for Marriages and Families</h3><p>Lord, bless our marriages and families. Keep us safe and together. Amen.</p>", guidance:"<h3>Guidance and Protection Prayers</h3><p>Heavenly Father, guide my steps today. Give me wisdom and protect my family. Amen.</p><p><b>Umthandazo wokuhola:</b> Nkulunkulu wami, ngihole namuhla. Amen.</p>", rosary:"<h3>Holy Rosaries and Chaplets</h3><p>Holy Mary, Mother of God, pray for us now and at the hour of our death. Amen.</p>" }; box.innerHTML = texts[type] || "<p>Prayer coming soon.</p>"; }
+render();
+</script>
+</body>
+</html>
