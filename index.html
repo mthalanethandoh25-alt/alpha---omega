@@ -1,38 +1,106 @@
-<!-- PRAYER CATEGORIES - LIKE IN YOUR PHOTO -->
-<h2 style="color:#f9c74f;">🙏 Prayers - Choose a Category</h2>
-<div style="background:white; border-radius:15px; overflow:hidden;">
-  <div onclick="showPrayers('praise')" style="padding:15px; border-bottom:1px solid #eee; cursor:pointer; color:black;">Prayers of Praise and Worship →</div>
-  <div onclick="showPrayers('alleviate')" style="padding:15px; border-bottom:1px solid #eee; cursor:pointer; color:black;">Prayers to Alleviate God and Mother Mary's Pains →</div>
-  <div onclick="showPrayers('salvation')" style="padding:15px; border-bottom:1px solid #eee; cursor:pointer; color:black;">Salvation Prayers →</div>
-  <div onclick="showPrayers('unborn')" style="padding:15px; border-bottom:1px solid #eee; cursor:pointer; color:black;">Prayers to Stop Abortions and to Baptise the Unborn →</div>
-  <div onclick="showPrayers('petition')" style="padding:15px; border-bottom:1px solid #eee; cursor:pointer; color:black;">Special Petition Prayers →</div>
-  <div onclick="showPrayers('guidance')" style="padding:15px; border-bottom:1px solid #eee; cursor:pointer; color:black;">Guidance and Protection Prayers →</div>
-  <div onclick="showPrayers('healing')" style="padding:15px; border-bottom:1px solid #eee; cursor:pointer; color:black;">Healing and Deliverance Prayers →</div>
-  <div onclick="showPrayers('law')" style="padding:15px; border-bottom:1px solid #eee; cursor:pointer; color:black;">Law Enforcement and Civil Service Prayers →</div>
-  <div onclick="showPrayers('dying')" style="padding:15px; border-bottom:1px solid #eee; cursor:pointer; color:black;">Prayers for the Dying and the Dead →</div>
-  <div onclick="showPrayers('family')" style="padding:15px; border-bottom:1px solid #eee; cursor:pointer; color:black;">Prayers for Marriages and Families →</div>
-  <div onclick="showPrayers('rosary')" style="padding:15px; border-bottom:1px solid #eee; cursor:pointer; color:black;">Holy Rosaries and Chaplets →</div>
-  <div onclick="showPrayers('missions')" style="padding:15px; border-bottom:1px solid #eee; cursor:pointer; color:black;">Prayers for Salvation Missions →</div>
-  <div onclick="showPrayers('darkness')" style="padding:15px; border-bottom:1px solid #eee; cursor:pointer; color:black;">Three Days of Darkness Prayers →</div>
-  <div onclick="showPrayers('bridget')" style="padding:15px; border-bottom:1px solid #eee; cursor:pointer; color:black;">St Bridget Prayer Devotions →</div>
-  <div onclick="showPrayers('extra')" style="padding:15px; cursor:pointer; color:black;">Supplementary Prayer Resources →</div>
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Alpha & Omega</title>
+<style>
+body{font-family:Arial;background:#0f2a1d;color:white;margin:0;padding:20px}
+h1{color:#f9c74f;text-align:center;margin:5px}
+button{background:#f9c74f;border:none;padding:10px 15px;border-radius:10px;font-weight:bold;cursor:pointer;margin:5px}
+.card{background:white;color:black;border-radius:15px;padding:15px;margin:15px 0}
+input,textarea{width:100%;padding:10px;margin:5px 0;border-radius:10px;border:1px solid #ccc;box-sizing:border-box}
+#formBox{display:none;background:white;color:black;padding:15px;border-radius:15px}
+.tab{background:white;color:black;padding:10px 15px;border-radius:10px;display:inline-block;margin:3px;cursor:pointer;font-weight:bold}
+.prayRow{background:white;color:black;padding:15px;border-bottom:1px solid #eee;cursor:pointer}
+.prayerBox{background:white;color:black;border-radius:15px;padding:18px;margin-top:15px;line-height:1.6}
+.prayerBox h3{color:#0f2a1d}
+</style>
+</head>
+<body>
+<h1>✝️ ALPHA & OMEGA</h1>
+<p style="text-align:center">Faith • Hope • The Word of God<br>Grow in faith and walk with God</p>
+<div style="text-align:center">
+<span class="tab" onclick="showTab('home')">Home</span>
+<span class="tab" onclick="showTab('prayers')">Prayers</span>
+<span class="tab" onclick="showTab('about')">About</span>
 </div>
 
-<div id="prayerDisplay" style="background:white; color:black; border-radius:15px; padding:15px; margin-top:15px; display:none;"></div>
+<div id="home">
+<h2>Messages</h2>
+<button onclick="showForm()">+ Add message</button>
+<div id="list"></div>
+<div id="formBox">
+<h2>Add Message</h2>
+<label>Title</label><input id="fTitle" placeholder="e.g. God Is Our Strength">
+<label>Bible verse</label><input id="fVerse" placeholder="e.g. Psalm 46:1">
+<label>Message</label><textarea id="fMsg" rows="4"></textarea>
+<label>Prayer</label><textarea id="fPrayer" rows="3"></textarea>
+<button onclick="saveMsg()">Save message</button>
+<button onclick="hideForm()">Cancel</button>
+</div>
+</div>
+
+<div id="prayers" style="display:none">
+<h2 style="color:#f9c74f;">🙏 Prayers - Choose a Category</h2>
+<div style="background:white;border-radius:15px;overflow:hidden;">
+<div class="prayRow" onclick="showPrayers('praise')">Prayers of Praise and Worship →</div>
+<div class="prayRow" onclick="showPrayers('alleviate')">Prayers to Alleviate God and Mother Mary's Pains →</div>
+<div class="prayRow" onclick="showPrayers('salvation')">Salvation Prayers →</div>
+<div class="prayRow" onclick="showPrayers('unborn')">Prayers to Stop Abortions and to Baptise the Unborn →</div>
+<div class="prayRow" onclick="showPrayers('petition')">Special Petition Prayers →</div>
+<div class="prayRow" onclick="showPrayers('guidance')">Guidance and Protection Prayers →</div>
+<div class="prayRow" onclick="showPrayers('healing')">Healing and Deliverance Prayers →</div>
+<div class="prayRow" onclick="showPrayers('law')">Law Enforcement and Civil Service Prayers →</div>
+<div class="prayRow" onclick="showPrayers('dying')">Prayers for the Dying and the Dead →</div>
+<div class="prayRow" onclick="showPrayers('family')">Prayers for Marriages and Families →</div>
+<div class="prayRow" onclick="showPrayers('rosary')">Holy Rosaries and Chaplets →</div>
+<div class="prayRow" onclick="showPrayers('missions')">Prayers for Salvation Missions →</div>
+<div class="prayRow" onclick="showPrayers('darkness')">Three Days of Darkness Prayers →</div>
+<div class="prayRow" onclick="showPrayers('bridget')">St Bridget Prayer Devotions →</div>
+<div class="prayRow" onclick="showPrayers('extra')">Supplementary Prayer Resources →</div>
+</div>
+<div id="prayerDisplay" class="prayerBox" style="display:none;"></div>
+</div>
+
+<div id="about" style="display:none">
+<h2>About Alpha & Omega</h2>
+<div class="card">
+<p>Alpha & Omega is a faith-sharing space created to encourage people through Scripture, prayer and reflection.</p>
+<p>“I am the Alpha and the Omega, the First and the Last, the Beginning and the End.” - Revelation 22:13</p>
+<p>Created by Thando to share God's Word, to pray together and to encourage everyone in Underberg and beyond.</p>
+</div>
+</div>
 
 <script>
+let messages = JSON.parse(localStorage.getItem('ao_msgs') || '[]');
+function showTab(t){ document.getElementById('home').style.display = t=='home'?'block':'none'; document.getElementById('prayers').style.display = t=='prayers'?'block':'none'; document.getElementById('about').style.display = t=='about'?'block':'none'; }
+function showForm(){ document.getElementById('formBox').style.display='block'; }
+function hideForm(){ document.getElementById('formBox').style.display='none'; }
+function saveMsg(){ let m={title:document.getElementById('fTitle').value, verse:document.getElementById('fVerse').value, msg:document.getElementById('fMsg').value, prayer:document.getElementById('fPrayer').value}; messages.unshift(m); localStorage.setItem('ao_msgs', JSON.stringify(messages)); hideForm(); render(); }
+function render(){ let html=""; messages.forEach((m)=>{ html+='<div class="card"><h3>'+(m.title||'')+'</h3><p><b>'+(m.verse||'')+'</b></p><p>'+(m.msg||'')+'</p><p><b>Prayer:</b> '+(m.prayer||'')+'</p></div>'; }); document.getElementById('list').innerHTML = html || "<p>No messages yet. Click + Add message.</p>"; }
 function showPrayers(type){
-  let box = document.getElementById('prayerDisplay');
-  box.style.display='block';
-  let texts = {
-    praise: "<h3>Prayers of Praise and Worship</h3><p>Lord, we praise You. You are holy, You are worthy. We worship You with all our hearts. Amen.</p>",
-    guidance: "<h3>Guidance and Protection Prayers</h3><p>Heavenly Father, guide my steps today. Give me wisdom, patience, and a heart that follows Your Word. Protect me and my family. Amen.</p><p><b>Umthandazo wokuhola:</b> Nkulunkulu wami, ngihole namuhla. Nginike ukuhlakanipha, ukubekezela nenhliziyo elalela iZwi lakho. Amen.</p>",
-    healing: "<h3>Healing and Deliverance Prayers</h3><p>Lord, when I feel weak, remind me that Your strength is always with me. Fill my heart with courage, peace and hope. Heal me and set me free. Amen.</p>",
-    family: "<h3>Prayers for Marriages and Families</h3><p>Lord, bless our marriages and families. Keep us safe, keep us together, fill our home with love and peace. Amen.</p>",
-    salvation: "<h3>Salvation Prayers</h3><p>Jesus, I believe in You. Save me, wash me clean, and lead me to eternal life. Amen.</p>",
-    rosary: "<h3>Holy Rosaries and Chaplets</h3><p>Holy Mary, Mother of God, pray for us now and at the hour of our death. Amen.</p>"
-  };
-  box.innerHTML = texts[type] || "<h3>This Category</h3><p>Prayer coming soon. You can add your prayer here.</p><p><button onclick=\"document.getElementById('prayerDisplay').style.display='none'\">← Back to all categories</button></p>";
-  window.scrollTo(0, box.offsetTop);
+let box=document.getElementById('prayerDisplay'); box.style.display='block';
+let T={
+praise:"<h3>🙏 Prayers of Praise and Worship</h3><p><b>1. Morning Praise:</b><br>Lord, I praise You this morning. You are holy, You are worthy, You are good. Thank You for waking me up, for breath, for family, for a new day. I worship You with all my heart.</p><p><b>2. Worship Prayer:</b><br>Heavenly Father, You are great and greatly to be praised. I lift Your name above every problem. Let my life be worship to You. Amen.</p><p><i>Psalm 100:4 - Enter His gates with thanksgiving.</i></p>",
+alleviate:"<h3>🙏 Prayers to Alleviate God and Mother Mary's Pains</h3><p>Lord Jesus, we offer You our love to comfort Your Sacred Heart. Forgive us for the sins of the world. Mother Mary, we console your Immaculate Heart. We offer our prayers, our tears and our sacrifices to ease your pain. Help us to love more and sin less. Amen.</p><p><b>Prayer:</b> Sacred Heart of Jesus, have mercy on us. Immaculate Heart of Mary, pray for us.</p>",
+salvation:"<h3>🙏 Salvation Prayers</h3><p><b>Sinner's Prayer:</b><br>Jesus, I believe You died for me and rose again. I am sorry for my sins. Please forgive me, wash me clean, and come into my heart. I accept You as my Lord and Saviour. Lead me from today. Amen.</p><p><b>Prayer for Others:</b><br>Lord, save my family, save my friends, save our community. Open hearts that are closed. Let no one be lost. Amen.</p><p><i>Romans 10:9 - If you confess with your mouth, you will be saved.</i></p>",
+unborn:"<h3>🙏 Prayers to Stop Abortions and to Baptise the Unborn</h3><p>Lord, Protector of Life, we pray for every unborn child. Protect them in their mother's womb. Give courage to mothers who are afraid. Change hearts that choose abortion. We baptise in spirit every child lost - Lord, receive them into Your arms, into heaven. Let every child be born and loved. Amen.</p><p><b>Prayer:</b> Jesus, Mary and Joseph, protect all unborn children. Amen.</p>",
+petition:"<h3>🙏 Special Petition Prayers</h3><p>Lord, You know what is in my heart even before I speak it. I bring You my special petition today. [Say your need here quietly]. I trust You, I wait on You, I believe You will answer in Your perfect time and way. If it is Your will, grant it. If not, give me peace. Amen.</p><p><b>Prayer:</b> Lord, hear my prayer. Amen.</p>",
+guidance:"<h3>🙏 Guidance and Protection Prayers</h3><p>Heavenly Father, guide my steps today. Give me wisdom, patience, and a heart that follows Your Word. Protect me, protect my family, protect my home. Keep us from evil, from accidents, from bad people. Cover us with Your blood. Amen.</p><p><b>Umthandazo wokuhola:</b><br>Nkulunkulu wami, ngihole namuhla. Nginike ukuhlakanipha, ukubekezela nenhliziyo elalela iZwi lakho. Ngivikele mina nomndeni wami. Amen.</p><p><i>Psalm 23:1 - The Lord is my Shepherd.</i></p>",
+healing:"<h3>🙏 Healing and Deliverance Prayers</h3><p>Lord Jesus, Healer, I come to You broken. Heal my body, heal my mind, heal my heart. Where there is pain, bring comfort. Where there is fear, bring peace. Where there is sickness, bring healing. Deliver me from every chain - from addiction, from anger, from sadness, from evil. I declare: by Your stripes I am healed. Amen.</p><p><b>Deliverance Prayer:</b><br>In the name of Jesus, every evil spirit must leave. I am free. My home is free. My family is free. Amen.</p>",
+law:"<h3>🙏 Law Enforcement and Civil Service Prayers</h3><p>Lord, bless and protect all who serve our country - police, soldiers, nurses, doctors, teachers, and all civil servants. Give them wisdom, courage and honesty. Keep them safe when they go to work and bring them home safe. Bless their families. Help them serve with love and justice. Amen.</p>",
+dying:"<h3>🙏 Prayers for the Dying and the Dead</h3><p>Lord, comfort those who are dying. Be near them, hold their hand, take away their fear. Receive them in Your mercy when they leave this world. For all who have died, eternal rest grant unto them, O Lord, and let perpetual light shine upon them. Comfort their families. Give us hope that we will meet again. Amen.</p><p><i>John 11:25 - I am the resurrection and the life.</i></p>",
+family:"<h3>🙏 Prayers for Marriages and Families</h3><p>Lord, bless our marriages and families. Keep husbands and wives in love, faithful and patient. Bless children, bless parents, bless grandparents. Fill our home with love, peace, forgiveness and laughter. Heal broken families. Bring back those who left. Protect our home from division. Amen.</p><p><b>Prayer for Marriage:</b><br>God, make our marriage strong like a rock. Help us to love like You love us. Amen.</p>",
+rosary:"<h3>🙏 Holy Rosaries and Chaplets</h3><p><b>How to pray the Rosary:</b><br>1. Sign of the Cross + Apostles Creed<br>2. Our Father, 3 Hail Marys, Glory Be<br>3. 5 Decades: Each decade = 1 Our Father + 10 Hail Marys + Glory Be + Fatima Prayer</p><p><b>Hail Mary:</b><br>Hail Mary, full of grace, the Lord is with thee. Blessed art thou among women, and blessed is the fruit of thy womb, Jesus. Holy Mary, Mother of God, pray for us sinners, now and at the hour of our death. Amen.</p><p><b>Our Father:</b><br>Our Father, who art in heaven, hallowed be Thy name. Thy kingdom come, Thy will be done, on earth as it is in heaven. Give us this day our daily bread, and forgive us our trespasses, as we forgive those who trespass against us. And lead us not into temptation, but deliver us from evil. Amen.</p>",
+missions:"<h3>🙏 Prayers for Salvation Missions</h3><p>Lord, bless all missionaries, pastors, evangelists and all who carry Your Word. Open doors that no one can close. Open hearts in Underberg, in South Africa, in all the world. Let Your salvation reach every home, every school, every street. Send more workers to the harvest. Amen.</p>",
+darkness:"<h3>🙏 Three Days of Darkness Prayers</h3><p>Lord, keep us safe in times of darkness and fear. Let Your light shine in our homes and hearts. We trust in Your protection. We will keep blessed candles, holy water, and prayer in our homes. We will stay in prayer, not in fear. Jesus, we trust in You. Mary, cover us with your mantle. Amen.</p>",
+bridget:"<h3>🙏 St Bridget Prayer Devotions</h3><p>St Bridget, pray for us. Help us to meditate on the Passion of Jesus with love and devotion. Help us to remember His wounds, His suffering, His great love for us. May we never forget what Jesus did for us on the cross. Jesus, I love You. I thank You for dying for me. Amen.</p><p><b>15 Prayers of St Bridget:</b> Pray one each day for 1 year, meditating on the Passion.</p>",
+extra:"<h3>🙏 Supplementary Prayer Resources</h3><p><b>Morning Prayer:</b><br>Lord, thank You for this new day. I give it to You. Bless my work, my family, my going out and coming in. Amen.</p><p><b>Night Prayer:</b><br>Lord, thank You for today. Forgive me for my mistakes. Watch over me while I sleep. Wake me up tomorrow in peace. Amen.</p><p><b>Before Eating:</b><br>Bless us, O Lord, and these Thy gifts, which we are about to receive from Thy bounty. Amen.</p><p>More prayers coming soon - send your prayer to Thando to add it here!</p>"
+};
+box.innerHTML = T[type] || "<p>Prayer coming soon.</p>";
+box.innerHTML += "<br><button onclick=\"document.getElementById('prayerDisplay').style.display='none'\">← Back to all categories</button>";
 }
+render();
 </script>
+</body>
+</html>
